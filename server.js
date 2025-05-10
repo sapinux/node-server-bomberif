@@ -14,6 +14,8 @@ server.on("message", function (msg, rinfo) {
     if ("m" in data) console.log("m: " + String(data.m));       //quando o player morrer
     //console.log(String(msg));   //exibir a mensagem recebida no log
     //server.send("Recebido", rinfo.port, rinfo.address);
+    server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
+    //if (data.b) server.send(JSON.stringify(data.b), rinfo.port, rinfo.address); //envio de msg para o cliente
 });
 
 server.bind(62832)      //porta
