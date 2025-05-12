@@ -61,6 +61,8 @@ function create_host(data, rinfo) {
 
 function stop_host(data, rinfo) {
     console.log("Estamos no estado stop host");               //depuracao
+    var host_to_stop = hosts.indexOf(data.hn)                //capturar o host do indice hn 
+    hosts.splice(host_to_stop, 1)
 }
 
 function set_player_stat(data, rinfo) {
