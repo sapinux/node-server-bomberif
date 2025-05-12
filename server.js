@@ -2,7 +2,8 @@ var dgram = require("dgram");
 
 var server = dgram.createSocket("udp4");    //"udp4": o tipo que o game maker suporta
 
-var data;
+var data;           //variavel para receber a msg do cliente
+var hosts = [];     //vetor que armazenara os clientes
 
 const msg_type = {
     CREATE_HOST : 0,
@@ -23,6 +24,9 @@ server.on("message", function (msg, rinfo) {
     if ("m" in data) console.log("< m: " + String(data.m));       //quando o player morrer
     
     switch (data.t) {
+        case msg_type.CREATE_HOST:
+            creat_host(data, rinfo);    
+            break
         case msg_type.SET_PLAYER_STAT:
             set_player_stat(data, rinfo);    
             break
@@ -34,9 +38,13 @@ server.on("message", function (msg, rinfo) {
     //if (data.b) server.send(JSON.stringify(data.b), rinfo.port, rinfo.address); //envio de msg para o cliente
 });
 
+function creat_host(data, rinfo) {
+    console.log("Estamos no estado create host");               //depuracao
+    var number_hosts = hosts.length;                            //recebe a qtd de clientes
+}
+
 function set_player_stat(data, rinfo) {
-    console.log("Estamos no estado set player stat");
-    server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
+    console.log("Estamos no estado set player stat");               //depuracao
 }
 
 server.bind(62832)      //porta
