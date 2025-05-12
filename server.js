@@ -6,10 +6,10 @@ var server = dgram.createSocket("udp4");    //"udp4": o tipo que o game maker su
 var data;           //variavel para receber a msg do cliente
 var hosts = [];     //vetor que armazenara os clientes
 
-//function player(x,y) {
-//    this.x = x;
-//    this.y = y;/
-//}
+function player(x, y) {
+    this.x = x;
+    this.y = y;
+}
 
 const msg_type = {
     CREATE_HOST : 0,
@@ -41,19 +41,19 @@ server.on("message", function (msg, rinfo) {
     //if ("t" in data) console.log("< m: " + String(data.t));       //maquina de estado
     //console.log(String(msg));   //exibir a mensagem recebida no log
     //server.send("Recebido", rinfo.port, rinfo.address);
-    //if (data.b) server.send(JSON.stringify(data.b), rinfo.port, rinfo.address); //envio de msg para o cliente
+    server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
 });
 
 function create_host(data, rinfo) {
     console.log("Estamos no estado create host");                   //depuracao
-    //var host_number = hosts.length;                                 //recebe a qtd de clientes
-    //hosts.push([new player(0, 0)]);
+    var host_number = hosts.length;                                 //recebe a qtd de clientes
+    hosts.push([new player(0, 0)]);
 
-    //data.hn = host_number;                                          //hn recebe o numero do host
-    //data.pn = 0;
+    data.hn = host_number;                                          //hn recebe o numero do host
+    data.pn = 0;
 
-    //server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
-    //console.table(hosts);                                           
+    server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
+    console.table(hosts);                                           
 }
 
 function set_player_stat(data, rinfo) {
