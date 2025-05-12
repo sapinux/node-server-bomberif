@@ -31,12 +31,12 @@ server.on("message", function (msg, rinfo) {
     //if ("t" in data) console.log("< m: " + String(data.t));       //maquina de estado
     //console.log(String(msg));   //exibir a mensagem recebida no log
     //server.send("Recebido", rinfo.port, rinfo.address);
-    server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
     //if (data.b) server.send(JSON.stringify(data.b), rinfo.port, rinfo.address); //envio de msg para o cliente
 });
 
 function set_player_stat(data, rinfo) {
-    console.log("Estamos no estado set player stat")
+    console.log("Estamos no estado set player stat");
+    server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
 }
 
 server.bind(62832)      //porta
