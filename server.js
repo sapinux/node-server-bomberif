@@ -36,6 +36,9 @@ server.on("message", function (msg, rinfo) {
         case msg_type.SET_PLAYER_STAT:
             set_player_stat(data, rinfo);    
             break;
+        case msg_type.STOP_HOST:
+            stop_host(data, rinfo);
+            break;
     }
     
     //if ("t" in data) console.log("< m: " + String(data.t));       //maquina de estado
@@ -54,6 +57,10 @@ function create_host(data, rinfo) {
 
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
     console.table(hosts);                                           
+}
+
+function stop_host(data, rinfo) {
+    console.log("Estamos no estado stop host");               //depuracao
 }
 
 function set_player_stat(data, rinfo) {
