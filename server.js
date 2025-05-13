@@ -66,7 +66,7 @@ function stop_host(data, rinfo) {
 }
 
 function set_player_stat(data, rinfo) {
-    console.log("Estamos no estado set player stat");               //depuracao
+    console.log("Estamos no estado set player stat: " + String(data.hn));               //depuracao
 }
 
 server.bind(62832)      //porta
