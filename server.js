@@ -44,7 +44,8 @@ server.on("message", function (msg, rinfo) {
     //if ("t" in data) console.log("< m: " + String(data.t));       //maquina de estado
     //console.log(String(msg));   //exibir a mensagem recebida no log
     //server.send("Recebido", rinfo.port, rinfo.address);
-    server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
+    //server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
+    console.table(hosts);  
 });
 
 function create_host(data, rinfo) {
@@ -56,17 +57,19 @@ function create_host(data, rinfo) {
     data.pn = 0;
 
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
-    console.table(hosts);                                           
+                                             
 }
 
 function stop_host(data, rinfo) {
     console.log("Estamos no estado stop host");               //depuracao
     var host_to_stop = hosts.indexOf(data.hn)                //capturar o host do indice hn 
     hosts.splice(host_to_stop, 1)
+    server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
 
 function set_player_stat(data, rinfo) {
     console.log("Estamos no estado set player stat: " + String(data.hn));               //depuracao
+    server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
 
 server.bind(62832)      //porta
