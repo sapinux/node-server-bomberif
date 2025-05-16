@@ -18,9 +18,13 @@ const msg_type = {
     SET_PLAYER_STAT : 3
 }
 
+server.bind(62832)      //porta
+
 server.on("message", function (msg, rinfo) {
     data = JSON.parse(msg);
-    console.log(String(msg));   //depuracao -----apagar depois!!!!!
+    console.log(data);
+    console.log(rinfo);
+    //console.log("msg: " + String(msg));   //depuracao -----apagar depois!!!!!
 
     if ("id" in data) console.log("< id: " + String(data.id));    //id do player
     if ("x" in data) console.log("< x: " + String(data.x));       //x do player
@@ -41,11 +45,7 @@ server.on("message", function (msg, rinfo) {
             break;
     }
     
-    //if ("t" in data) console.log("< m: " + String(data.t));       //maquina de estado
-    //console.log(String(msg));   //exibir a mensagem recebida no log
-    //server.send("Recebido", rinfo.port, rinfo.address);
-    //server.send(JSON.stringify(data), rinfo.port, rinfo.address); //envio de msg para o cliente
-    console.table(hosts);  
+    console.table(hosts);   //exibir uma tabela com o hosts criados
 });
 
 function create_host(data, rinfo) {
@@ -72,4 +72,3 @@ function set_player_stat(data, rinfo) {
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
 
-server.bind(62832)      //porta
