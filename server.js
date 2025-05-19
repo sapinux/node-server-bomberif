@@ -7,9 +7,10 @@ var data;           //variavel para receber a msg do cliente
 var hosts = [];     //vetor que armazenara os clientes
 const limite_jogadores = 3; //quantidade de jogadores por sala
 
-function player(x, y) {
-    this.x = x;
+function player(y, z) {
+    //this.x = x;
     this.y = y;
+    this.z = z;
 }
 
 const msg_type = {
@@ -23,8 +24,7 @@ server.bind(62832)      //porta
 
 server.on("message", function (msg, rinfo) {
     data = JSON.parse(msg);
-    console.log(data);
-    console.log(rinfo);
+    
     //console.log("msg: " + String(msg));   //depuracao -----apagar depois!!!!!
 
     if ("id" in data) console.log("< id: " + String(data.id));    //id do player
@@ -45,15 +45,17 @@ server.on("message", function (msg, rinfo) {
             stop_host(data, rinfo);
             break;
     }
-    
-    console.log("tamanho do hosts: " + hosts.length);
-    console.log("players no hosts: " + hosts[hosts.length - 1].length);
+    console.log(data);      //depuracao
+    console.log(rinfo);     //depuracao
+    console.log("Sala: " + hosts.length + " players na sala: " + hosts[hosts.length - 1].length); //depuracao
     console.table(hosts);   //exibir uma tabela com o hosts criados
 });
 
 function create_host(data, rinfo) {
     console.log("Estamos no estado create host");                   //depuracao
-    var host_number = hosts.length;                                 //recebe a qtd de clientes
+    
+    //var host_number = hosts.length;                                 //recebe a qtd de clientes
+    
     if (hosts.length == 0)                  //se não houver sala
         hosts.push([new player(0, 0)]);     //cria uma com um player dentro
     else {
@@ -63,8 +65,8 @@ function create_host(data, rinfo) {
             hosts.push([new player(0, 0)]);     //cria uma nova sala
     }
     
-    data.hn = host_number;                                          //hn recebe o numero do host
-    data.pn = 0;
+    data.hn = hosts.length;                                         //hn recebe o numero do host
+    data.pn = hosts[hosts.length - 1].length;                       //recebe o numero do player
 
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
                                              
