@@ -4,7 +4,7 @@ const { json } = require("stream/consumers");
 var server = dgram.createSocket("udp4");    //"udp4": o tipo que o game maker suporta
 
 var data;           //variavel para receber a msg do cliente
-var hosts = [];     //vetor que armazenara os clientes
+var salas = [];     //vetor que armazenara os clientes
 const limite_jogadores = 3; //quantidade de jogadores por sala
 
 function player(y, z) {
@@ -47,26 +47,26 @@ server.on("message", function (msg, rinfo) {
     }
     console.log(data);      //depuracao
     console.log(rinfo);     //depuracao
-    console.log("Sala: " + hosts.length + " players na sala: " + hosts[hosts.length - 1].length); //depuracao
-    console.table(hosts);   //exibir uma tabela com o hosts criados
+    console.log("Sala: " + salas.length + " players na sala: " + salas[salas.length - 1].length); //depuracao
+    console.table(salas);   //exibir uma tabela com o salas criados
 });
 
 function create_host(data, rinfo) {
     console.log("Estamos no estado create host");                   //depuracao
     
-    //var host_number = hosts.length;                                 //recebe a qtd de clientes
+    //var host_number = salas.length;                                 //recebe a qtd de clientes
     
-    if (hosts.length == 0)                  //se não houver sala
-        hosts.push([new player(0, 0)]);     //cria uma com um player dentro
+    if (salas.length == 0)                  //se não houver sala
+        salas.push([new player(0, 0)]);     //cria uma com um player dentro
     else {
-        if (hosts[hosts.length - 1].length < limite_jogadores)     //se a sala estiver abaixo do limite
-            hosts[hosts.length - 1].push(new player(0, 0)); //adiciona jogador
+        if (salas[salas.length - 1].length < limite_jogadores)     //se a sala estiver abaixo do limite
+            salas[salas.length - 1].push(new player(0, 0)); //adiciona jogador
         else    //caso contrario        
-            hosts.push([new player(0, 0)]);     //cria uma nova sala
+            salas.push([new player(0, 0)]);     //cria uma nova sala
     }
     
-    data.hn = hosts.length;                                         //hn recebe o numero do host
-    data.pn = hosts[hosts.length - 1].length;                       //recebe o numero do player
+    data.hn = salas.length;                                         //hn recebe o numero do host
+    data.pn = salas[salas.length - 1].length;                       //recebe o numero do player
 
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
                                              
@@ -74,14 +74,14 @@ function create_host(data, rinfo) {
 
 function stop_host(data, rinfo) {
     console.log("Estamos no estado stop host");               //depuracao
-    var host_to_stop = hosts.indexOf(data.hn)                //capturar o host do indice hn 
-    hosts.splice(host_to_stop, 1)
+    var host_to_stop = salas.indexOf(data.hn)                //capturar o host do indice hn 
+    salas.splice(host_to_stop, 1)
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
 
 function set_player_stat(data, rinfo) {
     console.log("Estamos no estado set player stat: " + String(data.hn));               //depuracao
-    console.log(Object.keys(hosts));        
+    console.log(Object.keys(salas));        
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
 
