@@ -24,15 +24,16 @@ server.bind(62832)      //porta
 
 server.on("message", function (msg, rinfo) {
     data = JSON.parse(msg);
-    
+    console.log("recebido do cliente: ");
+    console.log(data);
     //console.log("msg: " + String(msg));   //depuracao -----apagar depois!!!!!
 
-    if ("id" in data) console.log("< id: " + String(data.id));    //id do player
-    if ("x" in data) console.log("< x: " + String(data.x));       //x do player
-    if ("y" in data) console.log("< y: " + String(data.y));       //y do player
-    if ("b" in data) console.log("< m: " + String(data.b));       //quando o player soltar bomba
-    if ("bp" in data) console.log("< m: " + String(data.bp));     //quando o player pegar uma bomba com luva
-    if ("m" in data) console.log("< m: " + String(data.m));       //quando o player morrer
+    //if ("id" in data) console.log("< id: " + String(data.id));    //id do player
+    //if ("x" in data) console.log("< x: " + String(data.x));       //x do player
+    //if ("y" in data) console.log("< y: " + String(data.y));       //y do player
+    //if ("b" in data) console.log("< m: " + String(data.b));       //quando o player soltar bomba
+    //if ("bp" in data) console.log("< m: " + String(data.bp));     //quando o player pegar uma bomba com luva
+    //if ("m" in data) console.log("< m: " + String(data.m));       //quando o player morrer
     
     switch (data.t) {
         case msg_type.CRIAR_SALA:
