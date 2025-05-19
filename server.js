@@ -14,7 +14,7 @@ function player(y, z) {
 }
 
 const msg_type = {
-    CREATE_HOST : 0,
+    CRIAR_SALA : 0,
 	JOIN_HOST : 1,
 	STOP_HOST : 2,
     SET_PLAYER_STAT : 3
@@ -35,8 +35,8 @@ server.on("message", function (msg, rinfo) {
     if ("m" in data) console.log("< m: " + String(data.m));       //quando o player morrer
     
     switch (data.t) {
-        case msg_type.CREATE_HOST:
-            create_host(data, rinfo);    
+        case msg_type.CRIAR_SALA:
+            criar_sala(data, rinfo);    
             break;
         case msg_type.SET_PLAYER_STAT:
             set_player_stat(data, rinfo);    
@@ -51,7 +51,7 @@ server.on("message", function (msg, rinfo) {
     console.table(salas);   //exibir uma tabela com o salas criados
 });
 
-function create_host(data, rinfo) {
+function criar_sala(data, rinfo) {
     console.log("Estamos no estado create host");                   //depuracao
     
     //var host_number = salas.length;                                 //recebe a qtd de clientes
@@ -65,7 +65,7 @@ function create_host(data, rinfo) {
             salas.push([new player(0, 0)]);     //cria uma nova sala
     }
     
-    data.hn = salas.length;                                         //hn recebe o numero do host
+    data.sn = salas.length;                                         //sn recebe o numero do host
     data.pn = salas[salas.length - 1].length;                       //recebe o numero do player
 
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
@@ -74,13 +74,13 @@ function create_host(data, rinfo) {
 
 function stop_host(data, rinfo) {
     console.log("Estamos no estado stop host");               //depuracao
-    var host_to_stop = salas.indexOf(data.hn)                //capturar o host do indice hn 
+    var host_to_stop = salas.indexOf(data.sn)                //capturar o host do indice sn 
     salas.splice(host_to_stop, 1)
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
 
 function set_player_stat(data, rinfo) {
-    console.log("Estamos no estado set player stat: " + String(data.hn));               //depuracao
+    console.log("Estamos no estado set player stat: " + String(data.sn));               //depuracao
     console.log(Object.keys(salas));        
     server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
 }
