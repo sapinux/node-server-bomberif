@@ -7,10 +7,10 @@ var data;           //variavel para receber a msg do cliente
 var salas = [];     //vetor que armazenara os clientes
 const limite_jogadores = 3; //quantidade de jogadores por sala
 
-function player(y, z) {
+function player(y, ip) {
     //this.x = x;
     this.y = y;
-    this.z = z;
+    this.ip = ip;
 }
 
 const msg_type = {
@@ -58,18 +58,24 @@ function criar_sala(data, rinfo) {
     //var host_number = salas.length;                                 //recebe a qtd de clientes
     
     if (salas.length == 0)                  //se não houver sala
-        salas.push([new player(0, 0)]);     //cria uma com um player dentro
+        salas.push([new player(0, rinfo.address)]);     //cria uma com um player dentro
     else {
         if (salas[salas.length - 1].length < limite_jogadores)     //se a sala estiver abaixo do limite
-            salas[salas.length - 1].push(new player(0, 0)); //adiciona jogador
+            salas[salas.length - 1].push(new player(0, rinfo.address)); //adiciona jogador
         else    //caso contrario        
-            salas.push([new player(0, 0)]);     //cria uma nova sala
+            salas.push([new player(0, rinfo.address)]);     //cria uma nova sala
     }
     
     data.sn = salas.length;                                         //sn recebe o numero do host
     data.pn = salas[salas.length - 1].length;                       //recebe o numero do player
 
-    server.send(JSON.stringify(data), rinfo.port, rinfo.address);   //enviar para o cliente
+    //enviar mensagem a todos da sala
+    for (let i = 0; i < salas[salas.length - 1].length; i ++) {
+        server.send(JSON.stringify(data), rinfo.port, salas[salas.length - 1][i].ip);   //enviar para o cliente
+    };
+    console.log( salas[salas.length - 1][data.pn - 1].ip );
+
+    
                                              
 }
 
